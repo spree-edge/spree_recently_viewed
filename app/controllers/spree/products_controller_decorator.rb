@@ -26,18 +26,10 @@ module Spree::ProductsControllerDecorator
   end
 
   def clear_recently_viewed_cookie_on_user_change
-    return if spree_current_user.nil? && cookies['previous_user_id'] = 0
+    return if spree_current_user.nil? || cookies['previous_user_id'] == spree_current_user.id.to_s
 
-    return if cookies['previous_user_id'] == spree_current_user.id.to_s
-
-    cookies.delete('previous_user_id')
-    clear_recently_viewed_cookie
+    cookies.delete('recently_viewed_products')
     cookies['previous_user_id'] = spree_current_user.id
-  end
-
-  def clear_recently_viewed_cookie
-    rvp_cookie_name = "recently_viewed_products"
-    cookies.delete(rvp_cookie_name)
   end
 end
 
