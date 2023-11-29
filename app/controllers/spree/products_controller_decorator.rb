@@ -16,13 +16,12 @@ module Spree::ProductsControllerDecorator
   def save_recently_viewed
     id = params[:product_id]
     return unless id.present?
-
-    rvp = (cookies['recently_viewed_products'] || '').split(', ')
+    rvp = (cookies["#{current_store.code}_recently_viewed_products"] || '').split(', ')
     rvp.delete(id)
     rvp << id unless rvp.include?(id.to_s)
     rvp_max_count = Spree::RecentlyViewed::Config.preferred_recently_viewed_products_max_count
     rvp.delete_at(0) if rvp.size > rvp_max_count.to_i
-    cookies['recently_viewed_products'] = rvp.join(', ')
+    cookies["#{current_store.code}_recently_viewed_products"] = rvp.join(', ')
   end
 
   def clear_recently_viewed_cookie_on_user_change
@@ -31,16 +30,16 @@ module Spree::ProductsControllerDecorator
       return
     end
 
-    return if cookies['previous_user_id'] == spree_current_user.id.to_s
+    return if cookies["#{current_store.code}_previous_user_id"] == spree_current_user.id.to_s
 
-    cookies.delete('recently_viewed_products')
-    cookies['previous_user_id'] = spree_current_user.id
+    cookies.delete("#{current_store.code}_recently_viewed_products")
+    cookies["#{current_store.code}_previous_user_id"] = spree_current_user.id
   end
 
   def reset_cookies_for_nil_user
-    unless cookies['previous_user_id'] == "0"
-      cookies.delete('recently_viewed_products')
-      cookies['previous_user_id'] = "0"
+    unless cookies["#{current_store.code}_previous_user_id"] == "0"
+      cookies.delete("#{current_store.code}_recently_viewed_products")
+      cookies["#{current_store.code}_previous_user_id"] = "0"
     end
   end
 end

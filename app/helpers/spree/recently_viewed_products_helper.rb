@@ -1,7 +1,7 @@
 module Spree
   module RecentlyViewedProductsHelper
     def cached_recently_viewed_products_ids
-      (cookies['recently_viewed_products'] || '').split(', ')
+      (cookies["#{current_store.code}_recently_viewed_products"] || '').split(', ')
     end
 
     def cached_recently_viewed_products
