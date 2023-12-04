@@ -3,8 +3,9 @@ module Spree::ProductsControllerDecorator
     base.include Spree::RecentlyViewedProductsHelper
     base.helper_method [:cached_recently_viewed_products, :cached_recently_viewed_products_ids]
     base.before_action :set_current_order, except: :recently_viewed
+    base.before_action :ensure_recently_viewed_enabled, only: :recently_viewed
     base.after_action :save_recently_viewed, only: :recently_viewed
-    base.before_action :clear_recently_viewed_cookie_on_user_change
+    base.before_action :clear_recently_viewed_cookie_on_user_change, if: -> { Flipper.enabled?(:recently_viewed, current_store.try(:id)) }
   end
 
   def recently_viewed
@@ -41,6 +42,10 @@ module Spree::ProductsControllerDecorator
       cookies.delete("#{current_store.code}_recently_viewed_products")
       cookies["#{current_store.code}_previous_user_id"] = "0"
     end
+  end
+
+  def ensure_recently_viewed_enabled
+    raise CanCan::AccessDenied unless Flipper.enabled?(:recently_viewed, current_store.try(:id))
   end
 end
 
