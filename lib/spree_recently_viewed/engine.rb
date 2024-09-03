@@ -6,7 +6,7 @@ module SpreeRecentlyViewed
 
     config.autoload_paths += %W(#{config.root}/lib)
 
-    initializer 'spree.recently_viewed.environment', before: :load_config_initializers do
+    config.after_initialize do |app|
       Spree::RecentlyViewed::Config = Spree::RecentlyViewedSetting.new
     end
 
