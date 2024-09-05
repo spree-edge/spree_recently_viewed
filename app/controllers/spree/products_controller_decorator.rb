@@ -19,9 +19,7 @@ module Spree::ProductsControllerDecorator
     rvp = (cookies["#{current_store.code}_recently_viewed_products"] || '').split(', ')
     rvp.delete(id)
     rvp << id unless rvp.include?(id.to_s)
-    rvp_max_count = Spree::RecentlyViewed::Config.preferred_recently_viewed_products_max_count
-    rvp.last(rvp_max_count) if rvp.size > rvp_max_count.to_i
-    cookies["#{current_store.code}_recently_viewed_products"] = rvp.last(rvp_max_count).join(', ')
+    cookies["#{current_store.code}_recently_viewed_products"] = rvp.join(', ')
   end
 
   def clear_recently_viewed_cookie_on_user_change
