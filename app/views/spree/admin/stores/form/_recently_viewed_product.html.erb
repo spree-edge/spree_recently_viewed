@@ -7,7 +7,7 @@
   <div class="card-body">
     <div class="form-group">
       <%= label_tag :recently_viewed_products_max_count %>
-      <%= text_field_tag :recently_viewed_products_max_count, Spree::RecentlyViewed::Config.preferred_recently_viewed_products_max_count, class: 'form-control' %>
+      <%= text_field_tag :recently_viewed_products_max_count, SpreeRecentlyViewed::Spree::Config.preferred_recently_viewed_products_max_count, class: 'form-control' %>
     </div>
   </div>
 </div>

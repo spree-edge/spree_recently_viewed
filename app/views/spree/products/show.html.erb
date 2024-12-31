@@ -15,7 +15,6 @@
           </h1>
           <div id="cart-form" data-hook="cart_form">
             <%= render 'cart_form', variant_change_identifier: 'productCarousel' %>
-            <%= render 'spree/products/wishlist_form' %>
           </div>
         </div>
       </div>
@@ -33,15 +32,12 @@
       </div>
     </div>
 
-    <div id="recently_viewed_container" class="mb-2" data-hook></div>
-
     <div id="no-product-available" class="no-product-available-dropdown">
       <%= render partial: 'spree/shared/no_product_available' %>
     </div>
 
     <%= render partial: 'gallery_modal' %>
   </div>
-  <div id="related-products"></div>
 
   <%= products_structured_data([@product]) %>
 
@@ -49,13 +45,15 @@
 
 <% end %>
 
+<div id="recently_viewed_container" class="mb-2" data-hook></div>
+
 <div
   data-related-products
   data-related-products-id="<%= @product.slug %>"
   data-related-products-enabled="<%= @product.respond_to?(:has_related_products?) %>" />
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("turbo:load", function() {
     Spree.fetch_recently_viewed_products('<%= @product.try(:id) %>');
   });
 </script>
