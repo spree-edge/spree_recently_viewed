@@ -1,11 +1,94 @@
 <% if cached_recently_viewed_products.any? %>
   <div id="recently_viewed" class="mt-4" data-hook>
-    <h3 class="product-section-title"><%= Spree.t(:recently_viewed_products) %></h3>
+    <h3 class="product-section-title container"><%= Spree.t(:recently_viewed_products) %></h3>
+    <div id="mobile" class="carousel slide d-md-none homepage-carousel" data-interval="false">
+      <div class="carousel-inner">
+        <% cached_recently_viewed_products.each_slice(4).with_index do |sliced_items, index| %>
+          <div class="carousel-item <%= 'active' if index == 0 %>">
+            <div class="container">
+              <div class="row carousel-items-container">
+                <% sliced_items.each_with_index do |item, idx| %>
+                  <div class="col-6">
+                    <%= render 'spree/shared/product', product: item, image_class: 'w-100' %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <a
+        class="d-flex position-absolute justify-content-center align-items-center carousel-icon-control carousel-icon-control--previous"
+        href="#mobile"
+        role="button"
+        data-slide="prev">
+        <span class="d-flex justify-content-center align-items-center carousel-icon-control-rounded" aria-hidden="true">
+          <%= icon(name: 'arrow-right',
+                  classes: 'spree-icon-arrow spree-icon-arrow-left',
+                  width: 20,
+                  height: 20) %>
+        </span>
+        <span class="sr-only"><%= Spree.t(:previous) %></span>
+      </a>
 
-    <ul id="recently_viewed_products" class="list-group">
-      <% cached_recently_viewed_products.each do |product| %>
-        <li class="list-group-item"><%= link_to product.name, product %></li>
-      <% end %>
-    </ul>
+      <a
+        class="d-flex position-absolute justify-content-center align-items-center carousel-icon-control carousel-icon-control--next"
+        href="#mobile"
+        role="button"
+        data-slide="next">
+        <span class="d-flex justify-content-center align-items-center carousel-icon-control-rounded" aria-hidden="true">
+          <%= icon(name: 'arrow-right',
+                  classes: 'spree-icon-arrow spree-icon-arrow-right',
+                  width: 20,
+                  height: 20) %>
+        </span>
+        <span class="sr-only"><%= Spree.t(:next) %></span>
+      </a>
+    </div>
+    <div id="desktop" class="carousel slide d-none d-md-block homepage-carousel" data-interval="false">
+      <div class="carousel-inner carousel-inner-width">
+        <% cached_recently_viewed_products.each_slice(4).with_index do |sliced_items, index| %>
+          <div class="carousel-item <%= 'active' if index == 0 %>">
+            <div class="container position-relative">
+              <a
+                class="d-flex position-absolute justify-content-center align-items-center carousel-icon-control carousel-icon-control--previous"
+                href="#desktop"
+                role="button"
+                data-slide="prev">
+                <span class="d-flex justify-content-center align-items-center carousel-icon-control-rounded" aria-hidden="true">
+                  <%= icon(name: 'arrow-right',
+                          classes: 'spree-icon-arrow spree-icon-arrow-left',
+                          width: 20,
+                          height: 20) %>
+                </span>
+                <span class="sr-only"><%= Spree.t(:previous) %></span>
+              </a>
+
+              <div class="row carousel-items-container">
+                <% sliced_items.each do |item| %>
+                  <div class="col-3 carouselItem">
+                    <%= render 'spree/shared/product', product: item, image_class: 'w-100' %>
+                  </div>
+                <% end %>
+              </div>
+
+              <a
+                class="d-md-flex position-absolute justify-content-center align-items-center carousel-icon-control carousel-icon-control--next"
+                href="#desktop"
+                role="button"
+                data-slide="next">
+                <span class="d-flex justify-content-center align-items-center carousel-icon-control-rounded" aria-hidden="true">
+                  <%= icon(name: 'arrow-right',
+                          classes: 'spree-icon-arrow spree-icon-arrow-right',
+                          width: 20,
+                          height: 20) %>
+                </span>
+                <span class="sr-only"><%= Spree.t(:next) %></span>
+              </a>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
 <% end %>

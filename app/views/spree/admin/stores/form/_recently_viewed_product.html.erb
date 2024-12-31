@@ -1,0 +1,13 @@
+<div class="card mb-3">
+  <div class="card-header">
+    <h1 class="card-title mb-0 h5">
+      <%= Spree.t(:recently_viewed_products) %>
+    </h1>
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <%= label_tag :recently_viewed_products_max_count %>
+      <%= text_field_tag :recently_viewed_products_max_count, SpreeRecentlyViewed::Spree::Config.preferred_recently_viewed_products_max_count, class: 'form-control' %>
+    </div>
+  </div>
+</div>
